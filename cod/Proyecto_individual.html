@@ -14658,7 +14658,7 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 <div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[2]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Se selecciona el url del que se estraerá la información</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Se selecciona el url del que se extraerá la información</span>
 <span class="n">url</span> <span class="o">=</span> <span class="s2">&quot;https://crautos.com/autosusados/&quot;</span>
 
 <span class="c1"># Manda una solicitud para obtener la información de la página web (librería requests)</span>
@@ -14666,13 +14666,61 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 
 <span class="c1"># Se analiza la información del HTML (librería BeautifulSoup)</span>
 <span class="n">sopa</span> <span class="o">=</span> <span class="n">BeautifulSoup</span><span class="p">(</span><span class="n">respuesta</span><span class="o">.</span><span class="n">content</span><span class="p">,</span> <span class="s1">&#39;html.parser&#39;</span><span class="p">)</span>
+</pre></div>
 
-<span class="c1"># Se inicia extrayendo el tipo de cambio</span>
-<span class="n">tipo_cambio</span> <span class="o">=</span> <span class="mi">0</span>
+     </div>
+</div>
+</div>
+</div>
 
-<span class="k">for</span> <span class="n">fila</span> <span class="ow">in</span> <span class="n">sopa</span><span class="o">.</span><span class="n">find_all</span><span class="p">(</span><span class="s1">&#39;div&#39;</span><span class="p">,</span> <span class="n">class_</span><span class="o">=</span><span class="s1">&#39;brandtitle2&#39;</span><span class="p">):</span>
-    <span class="k">if</span><span class="p">(</span><span class="n">fila</span><span class="o">.</span><span class="n">get_text</span><span class="p">()</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="s2">&quot;Tipo de cambio: &quot;</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">):</span>
-        <span class="n">tipo_cambio</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">fila</span><span class="o">.</span><span class="n">get_text</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;¢&quot;</span><span class="p">)[</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">:</span><span class="mi">5</span><span class="p">])</span>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<p>Se procede a crear las funciones para extraer cada uno de los elementos necesarios de la página web.</p>
+
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[3]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">elementos_simples</span><span class="p">(</span><span class="n">sopa_bs4</span><span class="p">,</span> <span class="n">tipo</span><span class="p">,</span> <span class="n">clase</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Función que extrae los elementos que no ocupan modificaciones de un HTML</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    sopa : bs4.BeautifulSoup</span>
+<span class="sd">        HTML leído a trevés de la librería BeautifulSoup</span>
+<span class="sd">    tipo : str</span>
+<span class="sd">        Tipo de elemento a buscar y extraer de un elemento &#39;sopa&#39; del paquete BeautifulSoup</span>
+<span class="sd">    clase : str</span>
+<span class="sd">        Clase de elemento a buscar y extraer de un elemento &#39;sopa&#39; del paquete BeautifulSoup</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    lista_simple : list</span>
+<span class="sd">        Lista con los elementos encontrados dentro del HTML correspondiente</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="c1"># Lista para guardar los elementos correspondientes</span>
+    <span class="n">lista_simple</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="c1"># Se itera por cada uno de los elementos del HTML con la clase y el tipo especificado</span>
+    <span class="k">for</span> <span class="n">fila</span> <span class="ow">in</span> <span class="n">sopa_bs4</span><span class="o">.</span><span class="n">find_all</span><span class="p">(</span><span class="n">tipo</span><span class="p">,</span> <span class="n">class_</span> <span class="o">=</span> <span class="n">clase</span><span class="p">):</span>
+        <span class="c1"># Se extrae el elemento y se agrega a la lista</span>
+        <span class="n">elemento</span> <span class="o">=</span> <span class="n">fila</span><span class="o">.</span><span class="n">get_text</span><span class="p">()</span>
+        <span class="n">lista_simple</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">elemento</span><span class="p">)</span>
+
+        <span class="c1"># Se deja un espacio de un segundo entre cada iteración, esto para no sobrecargar la página, pues en cada iteración se mete a ella</span>
+        <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">lista_simple</span>
 </pre></div>
 
      </div>
@@ -14685,103 +14733,37 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[3]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[4]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Se crea una lista vacía para guardar los otros elementos relevantes de la página web</span>
-<span class="n">marcas</span> <span class="o">=</span> <span class="p">[]</span>
-<span class="n">modelos</span> <span class="o">=</span> <span class="p">[]</span>
-<span class="n">annos</span> <span class="o">=</span> <span class="p">[]</span>
-<span class="n">transmisiones</span> <span class="o">=</span> <span class="p">[]</span>
-<span class="n">pasajeros</span> <span class="o">=</span> <span class="p">[]</span>
-<span class="n">precio</span> <span class="o">=</span> <span class="p">[]</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">elemento_anno</span><span class="p">(</span><span class="n">sopa_bs4</span><span class="p">,</span> <span class="n">tipo</span><span class="p">,</span> <span class="n">clase</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Función que extrae los años de cada carro de la página web de crautos</span>
 
-<span class="c1"># Iteramos por las filas de código del HTML para conseguir los elementos que nos interesan, iniciando por la marca del carro</span>
-<span class="k">for</span> <span class="n">fila</span> <span class="ow">in</span> <span class="n">sopa</span><span class="o">.</span><span class="n">find_all</span><span class="p">(</span><span class="s1">&#39;span&#39;</span><span class="p">,</span> <span class="n">class_</span><span class="o">=</span><span class="s1">&#39;brandtitle&#39;</span><span class="p">):</span>
-    <span class="n">marca</span> <span class="o">=</span> <span class="n">fila</span><span class="o">.</span><span class="n">get_text</span><span class="p">()</span>
-    <span class="n">marcas</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">marca</span><span class="p">)</span>
-    <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="sd">    Parameters</span>
+<span class="sd">    sopa : bs4.BeautifulSoup</span>
+<span class="sd">        HTML leído a trevés de la librería BeautifulSoup</span>
+<span class="sd">    tipo : str</span>
+<span class="sd">        Tipo de elemento a buscar y extraer de un elemento &#39;sopa&#39; del paquete BeautifulSoup</span>
+<span class="sd">    clase : str</span>
+<span class="sd">        Clase de elemento a buscar y extraer de un elemento &#39;sopa&#39; del paquete BeautifulSoup</span>
 
-<span class="c1"># Hay 2 nombres de la marca, entonces agragamos los restantes</span>
-<span class="k">for</span> <span class="n">fila</span> <span class="ow">in</span> <span class="n">sopa</span><span class="o">.</span><span class="n">find_all</span><span class="p">(</span><span class="s1">&#39;td&#39;</span><span class="p">,</span> <span class="n">class_</span><span class="o">=</span><span class="s1">&#39;brandtitle2&#39;</span><span class="p">):</span>
-    <span class="n">marca</span> <span class="o">=</span> <span class="n">fila</span><span class="o">.</span><span class="n">get_text</span><span class="p">()</span>
-    <span class="n">marcas</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">marca</span><span class="p">)</span>
-    <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="sd">    Returns</span>
+<span class="sd">    lista_annos : list</span>
+<span class="sd">        Lista con los años encontrados dentro del HTML correspondiente</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="c1"># Lista para guardar los elementos correspondientes</span>
+    <span class="n">lista_annos</span> <span class="o">=</span> <span class="p">[]</span>
 
-<span class="c1"># Seguimos con el modelo y el año</span>
-<span class="k">for</span> <span class="n">fila</span> <span class="ow">in</span> <span class="n">sopa</span><span class="o">.</span><span class="n">find_all</span><span class="p">(</span><span class="s1">&#39;td&#39;</span><span class="p">,</span> <span class="n">class_</span><span class="o">=</span><span class="s1">&#39;modeltitle&#39;</span><span class="p">):</span>
-    <span class="n">anno</span> <span class="o">=</span> <span class="n">fila</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">&#39;b&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">get_text</span><span class="p">()[</span> <span class="p">:</span> <span class="mi">4</span><span class="p">]</span> <span class="c1"># Extrae una cadena con muchos espacios, solo nos interesa el año (los primeros 4 caracteres)</span>
-    <span class="n">modelo</span> <span class="o">=</span> <span class="n">fila</span><span class="o">.</span><span class="n">get_text</span><span class="p">()</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39; - &#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="c1"># Extrae toda la información detallada del carro, quita los espacios del inicio y el final, separa por guiones y guarda el primer elemento</span>
-    <span class="n">annos</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">anno</span><span class="p">)</span>
-    <span class="n">modelos</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">modelo</span><span class="p">)</span>
-    <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+    <span class="c1"># Se itera por cada uno de los elementos del HTML con la clase y el tipo especificado</span>
+    <span class="k">for</span> <span class="n">fila</span> <span class="ow">in</span> <span class="n">sopa_bs4</span><span class="o">.</span><span class="n">find_all</span><span class="p">(</span><span class="n">tipo</span><span class="p">,</span> <span class="n">class_</span> <span class="o">=</span> <span class="n">clase</span><span class="p">):</span>
+        <span class="c1"># Extrae una cadena con muchos espacios, solo nos interesa el año (los primeros 4 caracteres)</span>
+        <span class="n">anno</span> <span class="o">=</span> <span class="n">fila</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">&#39;b&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">get_text</span><span class="p">()[</span> <span class="p">:</span> <span class="mi">4</span><span class="p">]</span>
+        <span class="n">lista_annos</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">anno</span><span class="p">)</span>
 
-<span class="c1"># Luego, la transmisión y el número de pasajeros</span>
-<span class="k">for</span> <span class="n">fila</span> <span class="ow">in</span> <span class="n">sopa</span><span class="o">.</span><span class="n">find_all</span><span class="p">(</span><span class="s1">&#39;div&#39;</span><span class="p">,</span> <span class="n">class_</span><span class="o">=</span><span class="s1">&#39;transtitle&#39;</span><span class="p">):</span>
-    <span class="c1"># Guardamos la fila, pues se le harán</span>
-    <span class="n">fila_actual</span> <span class="o">=</span> <span class="n">fila</span><span class="o">.</span><span class="n">get_text</span><span class="p">()</span>
-    
-    <span class="c1"># Obtenemos la transmisión</span>
-    <span class="k">if</span><span class="p">(</span><span class="n">fila_actual</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="s2">&quot;Automático&quot;</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">):</span>
-        <span class="n">transmision</span> <span class="o">=</span> <span class="s2">&quot;Automático&quot;</span>
-    <span class="k">elif</span><span class="p">(</span><span class="n">fila_actual</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="s2">&quot;Manual</span><span class="se">\r\n</span><span class="s2">&quot;</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">):</span>
-        <span class="n">transmision</span> <span class="o">=</span> <span class="s2">&quot;Manual&quot;</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="n">transmision</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
-    <span class="n">transmisiones</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">transmision</span><span class="p">)</span>
-    
-    <span class="c1"># Obtenemos los pasajeros</span>
-    <span class="k">if</span><span class="p">(</span><span class="n">fila_actual</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="s2">&quot;2 pas.&quot;</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">):</span>
-        <span class="n">pasajero</span> <span class="o">=</span> <span class="mi">2</span>
-    <span class="k">elif</span><span class="p">(</span><span class="n">fila_actual</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="s2">&quot;4 pas.&quot;</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">):</span>
-        <span class="n">pasajero</span> <span class="o">=</span> <span class="mi">4</span>
-    <span class="k">elif</span><span class="p">(</span><span class="n">fila_actual</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="s2">&quot;5 pas.&quot;</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">):</span>
-        <span class="n">pasajero</span> <span class="o">=</span> <span class="mi">5</span>
-    <span class="k">elif</span><span class="p">(</span><span class="n">fila_actual</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="s2">&quot;6 pas.&quot;</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">):</span>
-        <span class="n">pasajero</span> <span class="o">=</span> <span class="mi">6</span>
-    <span class="k">elif</span><span class="p">(</span><span class="n">fila_actual</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="s2">&quot;7 pas.&quot;</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">):</span>
-        <span class="n">pasajero</span> <span class="o">=</span> <span class="mi">7</span>
-    <span class="k">elif</span><span class="p">(</span><span class="n">fila_actual</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="s2">&quot;8 pas.&quot;</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">):</span>
-        <span class="n">pasajero</span> <span class="o">=</span> <span class="mi">8</span>
-    <span class="k">elif</span><span class="p">(</span><span class="n">fila_actual</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="s2">&quot;10 pas.&quot;</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">):</span>
-        <span class="n">pasajero</span> <span class="o">=</span> <span class="mi">10</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="n">pasajero</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
-    <span class="n">pasajeros</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">pasajero</span><span class="p">)</span>
-    <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
-
-<span class="c1"># Extraemos el precio</span>
-<span class="k">for</span> <span class="n">fila</span> <span class="ow">in</span> <span class="n">sopa</span><span class="o">.</span><span class="n">find_all</span><span class="p">(</span><span class="s1">&#39;td&#39;</span><span class="p">,</span> <span class="n">class_</span><span class="o">=</span><span class="s1">&#39;precio&#39;</span><span class="p">):</span>
-    <span class="c1"># Removemos las comas de los precios</span>
-    <span class="n">fila_limpia</span> <span class="o">=</span> <span class="n">fila</span><span class="o">.</span><span class="n">get_text</span><span class="p">()</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
-    
-    <span class="c1"># Ponemos el precio, en caso de que esté en dólares se multiplica por el tipo de cambio de la página</span>
-    <span class="k">if</span><span class="p">(</span><span class="n">fila_limpia</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="s2">&quot;¢&quot;</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">):</span>
-        <span class="n">coste</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">fila_limpia</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;¢ &quot;</span><span class="p">)[</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">:</span><span class="mi">8</span><span class="p">])</span>
-    <span class="k">elif</span><span class="p">(</span><span class="n">fila_limpia</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="s2">&quot;$&quot;</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">):</span>
-        <span class="n">coste</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">fila_limpia</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;$&quot;</span><span class="p">)[</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">:</span><span class="mi">5</span><span class="p">])</span>
-        <span class="n">coste</span> <span class="o">=</span> <span class="n">coste</span> <span class="o">*</span> <span class="n">tipo_cambio</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="n">coste</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
-    <span class="n">precio</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">coste</span><span class="p">)</span>
-    <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
-
-<span class="c1"># Para la siguiente parte, se encuentran algunos repetidos, por lo que se hará un set para evitar este problema</span>
-<span class="n">lista_sec</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">sopa</span><span class="o">.</span><span class="n">find_all</span><span class="p">(</span><span class="s1">&#39;span&#39;</span><span class="p">,</span> <span class="n">class_</span><span class="o">=</span><span class="s1">&#39;precio&#39;</span><span class="p">))</span>
-
-<span class="k">for</span> <span class="n">fila</span> <span class="ow">in</span> <span class="n">lista_sec</span><span class="p">:</span>
-    <span class="c1">#Removemos las comas de los precios</span>
-    <span class="n">fila_limpia</span> <span class="o">=</span> <span class="n">fila</span><span class="o">.</span><span class="n">get_text</span><span class="p">()</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
-    
-    <span class="k">if</span><span class="p">(</span><span class="n">fila_limpia</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="s2">&quot;¢&quot;</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">):</span>
-        <span class="n">coste</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">fila_limpia</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;¢&quot;</span><span class="p">)[</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">:</span><span class="mi">8</span><span class="p">])</span>
-    <span class="k">elif</span><span class="p">(</span><span class="n">fila_limpia</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="s2">&quot;$&quot;</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">):</span>
-        <span class="n">coste</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">fila_limpia</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;$&quot;</span><span class="p">)[</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">:</span><span class="mi">5</span><span class="p">])</span>
-        <span class="n">coste</span> <span class="o">=</span> <span class="n">coste</span> <span class="o">*</span> <span class="n">tipo_cambio</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="n">coste</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
-    <span class="n">precio</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">coste</span><span class="p">)</span>
-    <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+        <span class="c1"># Se deja un espacio de un segundo entre cada iteración, esto para no sobrecargar la página, pues en cada iteración se mete a ella</span>
+        <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">lista_annos</span>
 </pre></div>
 
      </div>
@@ -14789,12 +14771,337 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 </div>
 </div>
 
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[5]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">elemento_modelos</span><span class="p">(</span><span class="n">sopa_bs4</span><span class="p">,</span> <span class="n">tipo</span><span class="p">,</span> <span class="n">clase</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Función que extrae los modelos de cada carro de la página web de crautos</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    sopa : bs4.BeautifulSoup</span>
+<span class="sd">        HTML leído a trevés de la librería BeautifulSoup</span>
+<span class="sd">    tipo : str</span>
+<span class="sd">        Tipo de elemento a buscar y extraer de un elemento &#39;sopa&#39; del paquete BeautifulSoup</span>
+<span class="sd">    clase : str</span>
+<span class="sd">        Clase de elemento a buscar y extraer de un elemento &#39;sopa&#39; del paquete BeautifulSoup</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    lista_modelos : list</span>
+<span class="sd">        Lista con los modelos de carro encontrados dentro de la página web de crautos</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="c1"># Lista para guardar los elementos correspondientes</span>
+    <span class="n">lista_modelos</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="c1"># Se itera por cada uno de los elementos del HTML con la clase y el tipo especificado</span>
+    <span class="k">for</span> <span class="n">fila</span> <span class="ow">in</span> <span class="n">sopa_bs4</span><span class="o">.</span><span class="n">find_all</span><span class="p">(</span><span class="n">tipo</span><span class="p">,</span> <span class="n">class_</span> <span class="o">=</span> <span class="n">clase</span><span class="p">):</span>
+        <span class="c1"># Extrae toda la información detallada del carro, quita los espacios del inicio y el final, separa por guiones y guarda el primer elemento</span>
+        <span class="n">modelo</span> <span class="o">=</span> <span class="n">fila</span><span class="o">.</span><span class="n">get_text</span><span class="p">()</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39; - &#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">lista_modelos</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">modelo</span><span class="p">)</span>
+
+        <span class="c1"># Se deja un espacio de un segundo entre cada iteración, esto para no sobrecargar la página, pues en cada iteración se mete a ella</span>
+        <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">lista_modelos</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[6]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">elemento_transmision</span><span class="p">(</span><span class="n">sopa_bs4</span><span class="p">,</span> <span class="n">tipo</span><span class="p">,</span> <span class="n">clase</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Función que extrae las transmisiones de cada carro de la página web de crautos</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    sopa : bs4.BeautifulSoup</span>
+<span class="sd">        HTML leído a trevés de la librería BeautifulSoup</span>
+<span class="sd">    tipo : str</span>
+<span class="sd">        Tipo de elemento a buscar y extraer de un elemento &#39;sopa&#39; del paquete BeautifulSoup</span>
+<span class="sd">    clase : str</span>
+<span class="sd">        Clase de elemento a buscar y extraer de un elemento &#39;sopa&#39; del paquete BeautifulSoup</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    lista_transmisiones : list</span>
+<span class="sd">        Lista con las transmisiones de carro encontrados dentro de la página web de crautos</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="c1"># Lista para guardar los elementos correspondientes</span>
+    <span class="n">lista_transmision</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="c1"># Se itera por cada uno de los elementos del HTML con la clase y el tipo especificado</span>
+    <span class="k">for</span> <span class="n">fila</span> <span class="ow">in</span> <span class="n">sopa_bs4</span><span class="o">.</span><span class="n">find_all</span><span class="p">(</span><span class="n">tipo</span><span class="p">,</span> <span class="n">class_</span> <span class="o">=</span> <span class="n">clase</span><span class="p">):</span>
+        <span class="c1"># Guardamos la fila, pues se le harán</span>
+        <span class="n">fila_actual</span> <span class="o">=</span> <span class="n">fila</span><span class="o">.</span><span class="n">get_text</span><span class="p">()</span>
+        
+        <span class="c1"># Obtenemos la transmisión</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">fila_actual</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="s2">&quot;Automático&quot;</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">):</span>
+            <span class="n">transmision</span> <span class="o">=</span> <span class="s2">&quot;Automático&quot;</span>
+        <span class="k">elif</span><span class="p">(</span><span class="n">fila_actual</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="s2">&quot;Manual</span><span class="se">\r\n</span><span class="s2">&quot;</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">):</span>
+            <span class="n">transmision</span> <span class="o">=</span> <span class="s2">&quot;Manual&quot;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">transmision</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+        <span class="n">lista_transmision</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">transmision</span><span class="p">)</span>
+
+        <span class="c1"># Se deja un espacio de un segundo entre cada iteración, esto para no sobrecargar la página, pues en cada iteración se mete a ella</span>
+        <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">lista_transmision</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[7]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">elemento_transmision</span><span class="p">(</span><span class="n">sopa_bs4</span><span class="p">,</span> <span class="n">tipo</span><span class="p">,</span> <span class="n">clase</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Función que extrae las transmisiones de cada carro de la página web de crautos</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    sopa : bs4.BeautifulSoup</span>
+<span class="sd">        HTML leído a trevés de la librería BeautifulSoup</span>
+<span class="sd">    tipo : str</span>
+<span class="sd">        Tipo de elemento a buscar y extraer de un elemento &#39;sopa&#39; del paquete BeautifulSoup</span>
+<span class="sd">    clase : str</span>
+<span class="sd">        Clase de elemento a buscar y extraer de un elemento &#39;sopa&#39; del paquete BeautifulSoup</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    lista_transmisiones : list</span>
+<span class="sd">        Lista con las transmisiones de carro encontrados dentro de la página web de crautos</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="c1"># Lista para guardar los elementos correspondientes</span>
+    <span class="n">lista_transmision</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="c1"># Se itera por cada uno de los elementos del HTML con la clase y el tipo especificado</span>
+    <span class="k">for</span> <span class="n">fila</span> <span class="ow">in</span> <span class="n">sopa_bs4</span><span class="o">.</span><span class="n">find_all</span><span class="p">(</span><span class="n">tipo</span><span class="p">,</span> <span class="n">class_</span> <span class="o">=</span> <span class="n">clase</span><span class="p">):</span>
+        <span class="c1"># Guardamos la fila, pues se le harán</span>
+        <span class="n">fila_actual</span> <span class="o">=</span> <span class="n">fila</span><span class="o">.</span><span class="n">get_text</span><span class="p">()</span>
+        
+        <span class="c1"># Obtenemos la transmisión</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">fila_actual</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="s2">&quot;Automático&quot;</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">):</span>
+            <span class="n">transmision</span> <span class="o">=</span> <span class="s2">&quot;Automático&quot;</span>
+        <span class="k">elif</span><span class="p">(</span><span class="n">fila_actual</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="s2">&quot;Manual</span><span class="se">\r\n</span><span class="s2">&quot;</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">):</span>
+            <span class="n">transmision</span> <span class="o">=</span> <span class="s2">&quot;Manual&quot;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">transmision</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+        <span class="n">lista_transmision</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">transmision</span><span class="p">)</span>
+
+        <span class="c1"># Se deja un espacio de un segundo entre cada iteración, esto para no sobrecargar la página, pues en cada iteración se mete a ella</span>
+        <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">lista_transmision</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[8]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">elemento_precio</span><span class="p">(</span><span class="n">sopa_bs4</span><span class="p">,</span> <span class="n">tipo</span><span class="p">,</span> <span class="n">clase</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Función que extrae el precio, en colones, de cada carro de la página web de crautos</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    sopa : bs4.BeautifulSoup</span>
+<span class="sd">        HTML leído a trevés de la librería BeautifulSoup</span>
+<span class="sd">    tipo : str</span>
+<span class="sd">        Tipo de elemento a buscar y extraer de un elemento &#39;sopa&#39; del paquete BeautifulSoup</span>
+<span class="sd">    clase : str</span>
+<span class="sd">        Clase de elemento a buscar y extraer de un elemento &#39;sopa&#39; del paquete BeautifulSoup</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    lista_transmisiones : list</span>
+<span class="sd">        Lista con los precios, en colones, de cada carro encontrados dentro de la página web de crautos</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="c1"># Se inicia extrayendo el tipo de cambio</span>
+    <span class="n">tipo_cambio</span> <span class="o">=</span> <span class="mi">0</span>
+    
+    <span class="k">for</span> <span class="n">fila</span> <span class="ow">in</span> <span class="n">sopa_bs4</span><span class="o">.</span><span class="n">find_all</span><span class="p">(</span><span class="s1">&#39;div&#39;</span><span class="p">,</span> <span class="n">class_</span> <span class="o">=</span> <span class="s1">&#39;brandtitle2&#39;</span><span class="p">):</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">fila</span><span class="o">.</span><span class="n">get_text</span><span class="p">()</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="s2">&quot;Tipo de cambio: &quot;</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">):</span>
+            <span class="n">tipo_cambio</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">fila</span><span class="o">.</span><span class="n">get_text</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;¢&quot;</span><span class="p">)[</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">:</span><span class="mi">5</span><span class="p">])</span>
+    
+    <span class="c1"># Lista para guardar los elementos correspondientes</span>
+    <span class="n">lista_precios</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="c1"># Se itera por cada uno de los elementos del HTML con la clase y el tipo especificado</span>
+    <span class="k">for</span> <span class="n">fila</span> <span class="ow">in</span> <span class="n">sopa_bs4</span><span class="o">.</span><span class="n">find_all</span><span class="p">(</span><span class="n">tipo</span><span class="p">,</span> <span class="n">class_</span> <span class="o">=</span> <span class="n">clase</span><span class="p">):</span>
+        <span class="c1"># Removemos las comas de los precios</span>
+        <span class="n">fila_limpia</span> <span class="o">=</span> <span class="n">fila</span><span class="o">.</span><span class="n">get_text</span><span class="p">()</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+        
+        <span class="c1"># Ponemos el precio, en caso de que esté en dólares se multiplica por el tipo de cambio de la página</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">fila_limpia</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="s2">&quot;¢&quot;</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">):</span>
+            <span class="n">coste</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">fila_limpia</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;¢ &quot;</span><span class="p">)[</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">:</span><span class="mi">8</span><span class="p">])</span>
+        <span class="k">elif</span><span class="p">(</span><span class="n">fila_limpia</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="s2">&quot;$&quot;</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">):</span>
+            <span class="n">coste</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">fila_limpia</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;$&quot;</span><span class="p">)[</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">:</span><span class="mi">5</span><span class="p">])</span>
+            <span class="n">coste</span> <span class="o">=</span> <span class="n">coste</span> <span class="o">*</span> <span class="n">tipo_cambio</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">coste</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+        <span class="n">lista_precios</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">coste</span><span class="p">)</span>
+
+        <span class="c1"># Se deja un espacio de un segundo entre cada iteración, esto para no sobrecargar la página, pues en cada iteración se mete a ella</span>
+        <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">lista_precios</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[9]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Hay otros precios que no se pueden extraer con la función anterior, por lo que se hará una función para estos últimos</span>
+<span class="k">def</span> <span class="nf">elemento_precio_b</span><span class="p">(</span><span class="n">sopa_bs4</span><span class="p">,</span> <span class="n">tipo</span><span class="p">,</span> <span class="n">clase</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Función que extrae el precio, en colones, de cada carro de la página web de crautos</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    sopa : bs4.BeautifulSoup</span>
+<span class="sd">        HTML leído a trevés de la librería BeautifulSoup</span>
+<span class="sd">    tipo : str</span>
+<span class="sd">        Tipo de elemento a buscar y extraer de un elemento &#39;sopa&#39; del paquete BeautifulSoup</span>
+<span class="sd">    clase : str</span>
+<span class="sd">        Clase de elemento a buscar y extraer de un elemento &#39;sopa&#39; del paquete BeautifulSoup</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    lista_transmisiones : list</span>
+<span class="sd">        Lista con los precios, en colones, de cada carro encontrados dentro de la página web de crautos</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="c1"># Se inicia extrayendo el tipo de cambio</span>
+    <span class="n">tipo_cambio</span> <span class="o">=</span> <span class="mi">0</span>
+    
+    <span class="k">for</span> <span class="n">fila</span> <span class="ow">in</span> <span class="n">sopa_bs4</span><span class="o">.</span><span class="n">find_all</span><span class="p">(</span><span class="s1">&#39;div&#39;</span><span class="p">,</span> <span class="n">class_</span> <span class="o">=</span> <span class="s1">&#39;brandtitle2&#39;</span><span class="p">):</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">fila</span><span class="o">.</span><span class="n">get_text</span><span class="p">()</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="s2">&quot;Tipo de cambio: &quot;</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">):</span>
+            <span class="n">tipo_cambio</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">fila</span><span class="o">.</span><span class="n">get_text</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;¢&quot;</span><span class="p">)[</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">:</span><span class="mi">5</span><span class="p">])</span>
+    
+    <span class="c1"># Lista para guardar los elementos correspondientes</span>
+    <span class="n">lista_precios</span> <span class="o">=</span> <span class="p">[]</span>
+    
+    <span class="c1"># Para la siguiente parte, se encuentran algunos repetidos, por lo que se hará un set para evitar este problema</span>
+    <span class="n">lista_sec</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">sopa_bs4</span><span class="o">.</span><span class="n">find_all</span><span class="p">(</span><span class="n">tipo</span><span class="p">,</span> <span class="n">class_</span> <span class="o">=</span> <span class="n">clase</span><span class="p">))</span>
+    
+    <span class="c1"># Se itera por cada uno de los elementos del HTML con la clase y el tipo especificado</span>
+    <span class="k">for</span> <span class="n">fila</span> <span class="ow">in</span> <span class="n">lista_sec</span><span class="p">:</span>
+        <span class="c1">#Removemos las comas de los precios</span>
+        <span class="n">fila_limpia</span> <span class="o">=</span> <span class="n">fila</span><span class="o">.</span><span class="n">get_text</span><span class="p">()</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+        
+        <span class="k">if</span><span class="p">(</span><span class="n">fila_limpia</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="s2">&quot;¢&quot;</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">):</span>
+            <span class="n">coste</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">fila_limpia</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;¢&quot;</span><span class="p">)[</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">:</span><span class="mi">8</span><span class="p">])</span>
+        <span class="k">elif</span><span class="p">(</span><span class="n">fila_limpia</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="s2">&quot;$&quot;</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">):</span>
+            <span class="n">coste</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">fila_limpia</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;$&quot;</span><span class="p">)[</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">:</span><span class="mi">5</span><span class="p">])</span>
+            <span class="n">coste</span> <span class="o">=</span> <span class="n">coste</span> <span class="o">*</span> <span class="n">tipo_cambio</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">coste</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+        <span class="n">lista_precios</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">coste</span><span class="p">)</span>
+        <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">lista_precios</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<p>Con las funciones anteriores, se procede a obtener todos los elementos para el DataFrame.</p>
+
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[10]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Iniciando por la marca del carro</span>
+<span class="n">marcas</span> <span class="o">=</span> <span class="n">elementos_simples</span><span class="p">(</span><span class="n">sopa</span><span class="p">,</span> <span class="s1">&#39;span&#39;</span><span class="p">,</span> <span class="s1">&#39;brandtitle&#39;</span><span class="p">)</span>
+<span class="n">marcas_2</span> <span class="o">=</span> <span class="n">elementos_simples</span><span class="p">(</span><span class="n">sopa</span><span class="p">,</span> <span class="s1">&#39;td&#39;</span><span class="p">,</span> <span class="s1">&#39;brandtitle2&#39;</span><span class="p">)</span>
+
+<span class="c1"># Juntamos las 2 listas de marcas</span>
+<span class="n">marcas</span> <span class="o">=</span> <span class="n">marcas</span> <span class="o">+</span> <span class="n">marcas_2</span>
+
+<span class="c1"># Seguimos con los modelos</span>
+<span class="n">modelos</span> <span class="o">=</span> <span class="n">elemento_modelos</span><span class="p">(</span><span class="n">sopa</span><span class="p">,</span> <span class="s1">&#39;td&#39;</span><span class="p">,</span> <span class="s1">&#39;modeltitle&#39;</span><span class="p">)</span>
+
+<span class="c1"># Continuamos con los años</span>
+<span class="n">annos</span> <span class="o">=</span> <span class="n">elemento_anno</span><span class="p">(</span><span class="n">sopa</span><span class="p">,</span> <span class="s1">&#39;td&#39;</span><span class="p">,</span> <span class="s1">&#39;modeltitle&#39;</span><span class="p">)</span>
+
+<span class="c1"># Luego con la transmisión</span>
+<span class="n">transmisiones</span> <span class="o">=</span> <span class="n">elemento_transmision</span><span class="p">(</span><span class="n">sopa</span><span class="p">,</span> <span class="s1">&#39;div&#39;</span><span class="p">,</span> <span class="s1">&#39;transtitle&#39;</span><span class="p">)</span>
+
+<span class="c1"># Extraemos el precio</span>
+<span class="n">precio</span> <span class="o">=</span> <span class="n">elemento_precio</span><span class="p">(</span><span class="n">sopa</span><span class="p">,</span> <span class="s1">&#39;td&#39;</span><span class="p">,</span> <span class="s1">&#39;precio&#39;</span><span class="p">)</span>
+<span class="n">precio_2</span> <span class="o">=</span> <span class="n">elemento_precio_b</span><span class="p">(</span><span class="n">sopa</span><span class="p">,</span> <span class="s1">&#39;span&#39;</span><span class="p">,</span> <span class="s1">&#39;precio&#39;</span><span class="p">)</span>
+
+<span class="c1"># Juntamos las listas de precios</span>
+<span class="n">precio</span> <span class="o">=</span> <span class="n">precio</span> <span class="o">+</span> <span class="n">precio_2</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<p>El DataFrame de crautos es el siguiente.</p>
+
+</div>
+</div>
+</div>
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[4]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[11]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">df_carros</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
@@ -14802,9 +15109,8 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
      <span class="s2">&quot;Modelo&quot;</span><span class="p">:</span> <span class="n">modelos</span><span class="p">,</span> 
      <span class="s2">&quot;Años&quot;</span><span class="p">:</span> <span class="n">annos</span><span class="p">,</span> 
      <span class="s2">&quot;Transmisiones&quot;</span><span class="p">:</span> <span class="n">transmisiones</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">62</span><span class="p">],</span>
-     <span class="s2">&quot;Pasajeros&quot;</span><span class="p">:</span> <span class="n">pasajeros</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">62</span><span class="p">],</span>
      <span class="s2">&quot;Precio&quot;</span><span class="p">:</span> <span class="n">precio</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">62</span><span class="p">]})</span>
-<span class="n">df_carros</span>
+<span class="n">df_carros</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
 </pre></div>
 
      </div>
@@ -14822,7 +15128,7 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 <div class="jp-OutputArea-child">
 
     
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[4]:</div>
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[11]:</div>
 
 
 
@@ -14849,113 +15155,52 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
       <th>Modelo</th>
       <th>Años</th>
       <th>Transmisiones</th>
-      <th>Pasajeros</th>
       <th>Precio</th>
     </tr>
   </thead>
   <tbody>
     <tr>
       <th>0</th>
-      <td>Toyota</td>
-      <td>COROLLA S</td>
-      <td>2010</td>
+      <td>Mitsubishi</td>
+      <td>XPANDER</td>
+      <td>2024</td>
       <td>Automático</td>
-      <td>5</td>
-      <td>6500000.0</td>
+      <td>14784000.0</td>
     </tr>
     <tr>
       <th>1</th>
-      <td>BMW</td>
-      <td>X3</td>
-      <td>2020</td>
-      <td>Automático</td>
-      <td>5</td>
-      <td>23000000.0</td>
+      <td>Chevrolet</td>
+      <td>COLORADO</td>
+      <td>2019</td>
+      <td>Manual</td>
+      <td>15000000.0</td>
     </tr>
     <tr>
       <th>2</th>
-      <td>Nissan</td>
-      <td>URVAN</td>
-      <td>2019</td>
-      <td>Manual</td>
-      <td>10</td>
-      <td>15500000.0</td>
+      <td>Citroen</td>
+      <td>C3 AIRCROSS</td>
+      <td>2018</td>
+      <td>Automático</td>
+      <td>7999950.0</td>
     </tr>
     <tr>
       <th>3</th>
-      <td>Hyundai</td>
-      <td>TUCSON</td>
-      <td>2019</td>
+      <td>Kia</td>
+      <td>SORENTO CRDI</td>
+      <td>2010</td>
       <td>Automático</td>
-      <td>5</td>
-      <td>12500000.0</td>
+      <td>7099950.0</td>
     </tr>
     <tr>
       <th>4</th>
-      <td>Honda</td>
-      <td>CRV EXL</td>
-      <td>2018</td>
+      <td>Mitsubishi</td>
+      <td>XPANDER</td>
+      <td>2022</td>
       <td>Automático</td>
-      <td>5</td>
-      <td>16950000.0</td>
-    </tr>
-    <tr>
-      <th>...</th>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-    </tr>
-    <tr>
-      <th>57</th>
-      <td>Mercedes Benz</td>
-      <td>ML300</td>
-      <td>2015</td>
-      <td>Automático</td>
-      <td>5</td>
-      <td>1240272.0</td>
-    </tr>
-    <tr>
-      <th>58</th>
-      <td>Audi</td>
-      <td>E-TRON 55 QUATRO</td>
-      <td>2021</td>
-      <td>Automático</td>
-      <td>7</td>
-      <td>2824800.0</td>
-    </tr>
-    <tr>
-      <th>59</th>
-      <td>Toyota</td>
-      <td>RAV4</td>
-      <td>2005</td>
-      <td>Automático</td>
-      <td>5</td>
-      <td>1641552.0</td>
-    </tr>
-    <tr>
-      <th>60</th>
-      <td>Maserati</td>
-      <td>LEVANTE S MY17</td>
-      <td>2017</td>
-      <td>Manual</td>
-      <td>5</td>
-      <td>2300000.0</td>
-    </tr>
-    <tr>
-      <th>61</th>
-      <td>Land Rover</td>
-      <td>RANGE ROVER EVOQUE</td>
-      <td>2012</td>
-      <td>Automático</td>
-      <td>5</td>
-      <td>6500000.0</td>
+      <td>11499950.0</td>
     </tr>
   </tbody>
 </table>
-<p>62 rows × 6 columns</p>
 </div>
 </div>
 
