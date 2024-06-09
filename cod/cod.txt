@@ -1,0 +1,3 @@
+En esta sección se encuentra el código del proyecto.
+
+Se agrega el código para reproducibilidad y el HTML como confirmación de que el código funciona, pues el tiempo de ejecución es considerablemente alto.
