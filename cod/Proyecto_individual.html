@@ -14672,12 +14672,12 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[85]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[3]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Por la privacidad de la persona, no se deja un número escrito, en caso de ser de Costa Rica basta poner el número receptor pegado al codigo del país</span>
-<span class="n">numero</span> <span class="o">=</span> <span class="n">MensajesWhatsapp</span><span class="p">(</span><span class="s1">&#39;+506&#39;</span><span class="p">)</span>
-<span class="n">numero</span><span class="o">.</span><span class="n">mensaje_instantaneo</span><span class="p">(</span><span class="s1">&#39;Hola, acá va el mensaje&#39;</span><span class="p">)</span>
+<span class="n">numero</span> <span class="o">=</span> <span class="n">MensajesWhatsapp</span><span class="p">(</span><span class="s1">&#39;+50688089397&#39;</span><span class="p">)</span>
+<span class="n">numero</span><span class="o">.</span><span class="n">mensaje_instantaneo</span><span class="p">(</span><span class="s1">&#39;Facilito&#39;</span><span class="p">)</span>
 </pre></div>
 
      </div>
@@ -14780,6 +14780,9 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 <li><a href="https://xlsxwriter.readthedocs.io/worksheet.html#worksheet-write-dynamic-array-formula">formula()</a> permite escribir todas las fórmulas de Excel que están disponibles en la librería, sin importar el idioma en el cual el usuario tenga la computadora o Excel, las fórmulas deben ponerse en inglés, pues así fué diseñada la librería.</li>
 <li><a href="https://xlsxwriter.readthedocs.io/worksheet.html#worksheet-write-row">escribir_fila()</a> se usa para pasar una lista de python a una fila de Excel.</li>
 <li><a href="https://xlsxwriter.readthedocs.io/worksheet.html#worksheet-write-column">escribir_columna()</a> se usa para pasar una lista de python a una columna de Excel.</li>
+<li><a href="https://xlsxwriter.readthedocs.io/worksheet.html#worksheet-conditional-format">condicional()</a> permite poner el fondo rojo a aquellas casillas que cumplan una condición.</li>
+<li><a href="https://xlsxwriter.readthedocs.io/example_sparklines1.html#ex-sparklines1">mini_barras()</a> crea un gráfico de barras pequeño, diseñado para un análisis rápido.</li>
+<li><a href="https://xlsxwriter.readthedocs.io/worksheet.html#worksheet-autofilter">filtro()</a> pone el formato de autofiltro en el rango seleccionado.</li>
 <li><a href="https://xlsxwriter.readthedocs.io/worksheet.html#worksheet-autofit">autoajuste()</a> autoajusta todas las columnas que tengan, al menos, una observación con datos.</li>
 <li><a href="https://xlsxwriter.readthedocs.io/working_with_pandas.html">cerrar()</a>, para cerrar el editor de python.</li>
 </ul>
@@ -14792,7 +14795,7 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[5]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[4]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Creación del objeto</span>
@@ -14816,30 +14819,23 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 <span class="n">excel_editado</span><span class="o">.</span><span class="n">escribir_fila</span><span class="p">(</span><span class="n">fila</span><span class="p">,</span> <span class="n">formato_escritura</span> <span class="o">=</span> <span class="s1">&#39;python&#39;</span><span class="p">,</span> <span class="n">fila</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">columna</span> <span class="o">=</span> <span class="mi">3</span><span class="p">)</span>
 <span class="n">excel_editado</span><span class="o">.</span><span class="n">escribir_columna</span><span class="p">(</span><span class="n">col</span><span class="p">,</span> <span class="n">formato_escritura</span> <span class="o">=</span> <span class="s1">&#39;python&#39;</span><span class="p">,</span> <span class="n">fila</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">columna</span> <span class="o">=</span> <span class="mi">3</span><span class="p">)</span>
 
-<span class="c1"># Gráfico</span>
-<span class="n">excel_editado</span><span class="o">.</span><span class="n">grafico_lineas</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
+<span class="c1"># Condicional</span>
+<span class="n">excel_editado</span><span class="o">.</span><span class="n">condicional</span><span class="p">(</span><span class="n">condicion</span> <span class="o">=</span> <span class="s1">&#39;&gt;=&#39;</span><span class="p">,</span> <span class="n">valor</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span> <span class="n">formato_escritura</span> <span class="o">=</span> <span class="s1">&#39;excel&#39;</span><span class="p">,</span> <span class="n">celdas</span> <span class="o">=</span> <span class="s1">&#39;A1:A4&#39;</span><span class="p">)</span>
+
+<span class="c1"># Gráfico de mini-barras</span>
+<span class="n">excel_editado</span><span class="o">.</span><span class="n">mini_barras</span><span class="p">(</span><span class="s1">&#39;A6&#39;</span><span class="p">,</span> <span class="s1">&#39;A2:A5&#39;</span><span class="p">)</span>
+
+<span class="c1"># Autofiltro</span>
+<span class="n">excel_editado</span><span class="o">.</span><span class="n">filtro</span><span class="p">(</span><span class="n">formato_escritura</span> <span class="o">=</span> <span class="s1">&#39;excel&#39;</span><span class="p">,</span> <span class="n">celdas</span> <span class="o">=</span> <span class="s1">&#39;A1:B5&#39;</span><span class="p">)</span>
+
+<span class="c1"># Protección del archivo</span>
+<span class="n">excel_editado</span><span class="o">.</span><span class="n">proteger</span><span class="p">(</span><span class="s1">&#39;facilito&#39;</span><span class="p">)</span>
 
 <span class="c1"># Autoajuste</span>
 <span class="n">excel_editado</span><span class="o">.</span><span class="n">autoajuste</span><span class="p">()</span>
 
 <span class="c1"># Necesario para cerrar el archivo, si no, el Excel no podrá abrirse</span>
 <span class="n">excel_editado</span><span class="o">.</span><span class="n">cerrar</span><span class="p">()</span>
-</pre></div>
-
-     </div>
-</div>
-</div>
-</div>
-
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span> 
 </pre></div>
 
      </div>
