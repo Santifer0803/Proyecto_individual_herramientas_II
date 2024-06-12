@@ -427,7 +427,7 @@ class EditorExcel:
         else:
             return print('El formato de escritura no es válido')
     
-    def proteger(self, contraseña, formato = True, eliminar_filas = True, eliminar_columnas = True):
+    def proteger(self, contraseña, formato = False, eliminar_filas = False, eliminar_columnas = False):
         ''' Método que proteje la hoja, permite elegir si el usuario puede alterar ciertos objetos con una contraseña
             
         Parameters
@@ -435,11 +435,11 @@ class EditorExcel:
         contraseña : str
             Contraseña que el usuario debe poner para modificar las opciones protegidas
         formato : bool
-            Decide si se protege el formato de las celdas, True por defecto
+            Decide si se protege el formato de las celdas, False por defecto
         eliminar_filas : bool
-            Decide si se protege la eliminación de las filas del Excel, True por defecto
+            Decide si se protege la eliminación de las filas del Excel, False por defecto
         eliminar_columnas : bool
-            Decide si se protege la eliminación de las columnas del Excel, True por defecto
+            Decide si se protege la eliminación de las columnas del Excel, False por defecto
         
         Returns
         -----
