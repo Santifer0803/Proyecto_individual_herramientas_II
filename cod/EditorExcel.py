@@ -211,49 +211,115 @@ class EditorExcel:
         '''
         self.__hoja.autofit()
     
-    def grafico_lineas(self, columna_categoria, columna_numerica, fila_fin, fila_ini = 1, color = 'red', eje_x = 'Categorías', eje_y = 'Cantidad'):
-        ''' Método que crea un gráfico de líneas en el Excel
+    def condicional(self, condicion, valor, formato_escritura = 'python', fila_ini = 0, columna_ini = 0, fila_fin = 0, columna_fin = 0, celdas = 'A1:A1'):
+        ''' Método que permite poner formato condicional en un rango de casillas de Excel
             
         Parameters
         ---------
-        columna_categorica : int
-            Índice de la columna categórica, iniciando en 0
-        columna_numérica : int
-            Índice de la columna numérica, iniciando en 0
+        condicion : str
+            Condición a evaluar el condicional, puede ser '<', '>', '<=', '>=' y similares
+        valor : float
+            Valor con el cual se aplicará la condición
+        formato_escritura : str
+            Indica el formato en el que se desea usar la función, si es 'Excel' el parámetro celda se rellena con una celda de Excel, si es python
+            (por defecto), se escribe la fila y la columna con numeración de python, es decir, solo con números iniciando en 0
         fila_ini : int
-            Fila en la que inician los datos, 1 por defecto
+            Fila en la que inicia la fórmula si se elige el formato de escritura 'python', 0 por defecto
+        columna_ini : int
+            Columna en la que inicia la fórmula si se elige el formato de escritura 'python', 0 por defecto
         fila_fin : int
-            Fila en la que terminan los datos
-        color : str
-            Color de la línea del gráfico
-        eje_x : str
-            Nombre del eje x del gráfico
-        eje_y : str
-            Nombre del eje y del gráfico
+            Fila en la que termina la fórmula si se elige el formato de escritura 'python', 0 por defecto
+        columna_fin : int
+            Columna en la que inicia la fórmula si se elige el formato de escritura 'python', 0 por defecto
+        celdas : str
+            Rango de celdas de Excel en donde se escribe el texto en caso de elegir el formato de escritura 'Excel', 'A1:A1' por defecto
+        
+        Returns
+        -----
+        mensaje : str
+            Devuelve un mensaje en caso de que el formato de escritura no sea válido
+        '''
+        # Color de fondo rojo
+        formato = self.__libro.add_format({'bg_color': '#FFC7CE'})
+        
+        # Casos para elejir entre Excel y python
+        if(formato_escritura == 'excel'):
+            self.__hoja.conditional_format(celdas, {'type': 'cell', 
+                                                    'criteria': condicion, 
+                                                    'value': valor, 
+                                                    'format': formato})
+        elif(formato_escritura == 'python'):
+            self.__hoja.conditional_format(fila_ini, columna_ini, fila_fin, columna_fin, {'type': 'cell', 
+                                                                                          'criteria': condicion, 
+                                                                                          'value': valor,
+                                                                                          'format' : formato})
+        else:
+            return print('El formato de escritura no es válido')
+    
+    def mini_barras(self, celda_grafico, celda_datos):
+        ''' Método que permite crear un gráfico de barras pequeño (sparklines)
+            
+        Parameters
+        ---------
+        celda_grafico : str
+            Celda de Excel en donde se pondrá el gráfico
+        celda_datos : str
+            Celda(s) de Excel de donde se toman los datos del gráfico
         
         Returns
         -----
         None
         '''
-        # Se crea la base del gráfico de líneas
-        cuadro = self.__libro.add_chart({'type' : 'line'})
+        self.__hoja.add_sparkline(celda_grafico, {"range": ("Hoja1!" + celda_datos), "type": "column", "style": 10})
+    
+    def filtro(self, formato_escritura = 'python', fila_ini = 0, columna_ini = 0, fila_fin = 0, columna_fin = 0, celdas = 'A1:B1'):
+        ''' Método que agrega el autofiltro a una selección de celdas de Excel
+            
+        Parameters
+        ---------
+        formato_escritura : str
+            Indica el formato en el que se desea usar la función, si es 'Excel' el parámetro celda se rellena con una celda de Excel, si es python
+            (por defecto), se escribe la fila y la columna con numeración de python, es decir, solo con números iniciando en 0
+        fila_ini : int
+            Fila en la que inicia el filtro (header) si se elige el formato de escritura 'python', 0 por defecto
+        columna_ini : int
+            Columna en la que inicia el filtro (header) si se elige el formato de escritura 'python', 0 por defecto
+        fila_fin : int
+            Fila en la que termina el filtro si se elige el formato de escritura 'python', 0 por defecto
+        columna_fin : int
+            Columna en la que inicia el filtro si se elige el formato de escritura 'python', 0 por defecto
+        celdas : str
+            Rango de celdas de Excel en donde se escribe el texto en caso de elegir el formato de escritura 'Excel', 'A1:B1' por defecto
         
-        # Se agregan los datos, las categorías y el color de la línea
-        cuadro.add_series({
-            'categories': ['Hoja1', fila_ini, columna_categoria, fila_fin, columna_categoria],
-            'values':     ['Hoja1', fila_ini, columna_numerica, fila_fin, columna_numerica],
-            'line':       {'color': color},
-        })
+        Returns
+        -----
+        None
+        '''
+        if(formato_escritura == 'excel'):
+            self.__hoja.autofilter(celdas)
+        elif(formato_escritura == 'python'):
+            self.__hoja.autofilter(fila_ini, columna_ini, fila_fin, columna_fin)
+        else:
+            return print('El formato de escritura no es válido')
+    
+    def proteger(self, contraseña, formato = True, eliminar_filas = True, eliminar_columnas = True):
+        ''' Método que proteje la hoja, permite elegir si el usuario puede alterar ciertos objetos con una contraseña
+            
+        Parameters
+        ---------
+        contraseña : str
+            Contraseña que el usuario debe poner para modificar las opciones protegidas
+        formato : bool
+            Decide si se protege el formato de las celdas
+        eliminar_filas : bool
+            Decide si se protege la eliminación de las filas del Excel
+        eliminar_columnas : bool
+            Decide si se protege la eliminación de las columnas del Excel
         
-        # Nombre de los ejes
-        cuadro.set_x_axis({
-            'name': eje_x,
-            'name_font': {'size': 8, 'bold': True},
-            'num_font':  {'italic': False },
-        })
-        
-        cuadro.set_y_axis({
-            'name': eje_y,
-            'name_font': {'size': 8, 'bold': True},
-            'num_font':  {'italic': False },
-        })
+        Returns
+        -----
+        None
+        '''
+        self.__hoja.protect(contraseña, {'format_cells': formato,
+                                         'delete_columns': eliminar_columnas,
+                                         'delete_rows': eliminar_filas})
